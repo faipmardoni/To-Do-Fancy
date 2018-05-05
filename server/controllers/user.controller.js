@@ -85,19 +85,5 @@ module.exports = {
           reason: error
         })
       })
-    // User.findByIdAndUpdate(req.params.id, req.body, { runValidators: true })
-    //   .exec()
-    //   .then(user => {
-    //     res.status(200).json({
-    //       message: 'success update',
-    //       user
-    //     })
-    //   })
-    //   .catch(error => {
-    //     res.status(400).json({
-    //       message: 'failed update',
-    //       reason: error
-    //     })
-    //   })
   }
 }

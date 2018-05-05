@@ -41,14 +41,14 @@ userSchema.pre('save', function (next) {
   })
 })
 
-userSchema.post('save', function (error, doc, next) {
-  console.log('this :', this);
-  if (user.isModified('email') && error.name === 'BulkWriteError' && error.code === 11000) {
-    next(error.message = 'Email already exists')
-  } else {
-    next(error, this)
-  }
-})
+// userSchema.post('save', function (error, doc, next) {
+//   console.log('this :', this);
+//   if (user.isModified('email') && error.name === 'BulkWriteError' && error.code === 11000) {
+//     next(error.message = 'Email already exists')
+//   } else {
+//     next(error, this)
+//   }
+// })
 
 
 const User = mongoose.model('user', userSchema)
