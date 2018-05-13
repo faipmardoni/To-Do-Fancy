@@ -12,10 +12,10 @@ const {
 } = require('../controllers/todo.controller')
 
 /* GET todos listing. */
-router.get('/', authentication, showTodos)
+router.get('/', showTodos)
 router.post('/', authentication, addTodos)
 router.get('/:id', authentication, detailTodos)
-router.delete('/:id', authentication, deleteTodos)
-router.put('/:id', authentication, updateTodos)
+router.delete('/:id', deleteTodos)
+router.put('/:id', updateTodos)
 
 module.exports = router;

@@ -4,15 +4,17 @@ const path = require('path')
 const cookieParser = require('cookie-parser')
 const logger = require('morgan')
 const dotenv = require('dotenv').config()
+const cors = require('cors')
 
 const indexRouter = require('./routes/index')
 const usersRouter = require('./routes/users')
 const todosRouter = require('./routes/todos')
 
 const app = express()
+app.use(cors())
 
 const mongoose = require('mongoose')
-mongoose.connect('mongodb://localhost/todofancy')
+mongoose.connect('mongodb://fm050394:faip5394@ds117540.mlab.com:17540/todofancy')
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function () {

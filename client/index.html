@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Todo Fancy</title>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+  <link rel="stylesheet" href="lib/css/login.css">
+  <script>
+    const token = localStorage.getItem('Token')
+    if (token) {
+      window.location.href = 'main.html'
+    }
+  </script>
+</head>
+
+<body>
+  <div class="container" id="login-form">
+    <h1>Login</h1>
+    <div class="row login-form">
+      <!-- <form action="#"> -->
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" class="form-control" name="email">
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control" name="password">
+      </div>
+      <button type="submit" class="btn btn-success btn-block">Login</button>
+      <!-- </form> -->
+    </div>
+    <div class="row" id="reg">
+      <p>Not a member?
+        <a href="#registerModal" data-toggle="modal" data-target="#modalRegister">Sign up now</a>
+      </p>
+      <span>
+        <strong>OR</strong>
+      </span>
+    </div>
+    <div class="row login">
+      <div class="col sosmed">
+        <div class="fb-login-button" data-max-rows="1" data-size="medium" data-button-type="continue_with" data-width="50px" data-scope="public_profile, email"
+          onlogin="checkLoginState();">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container">
+    <div class="modal fade" id="modalRegister" role="form">
+      <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal">&times;</button>
+            <h4 class="modal-title">Create new Account</h4>
+          </div>
+          <div class="modal-body">
+            <!-- <form action="#"> -->
+            <div class="form-group">
+              <label for="name">Name</label>
+              <input type="text" class="form-control" name="name" placeholder="e.g: Faip Mardoni">
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" class="form-control" name="email" placeholder="e.g: faipmardoni@gmail.com">
+            </div>
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" class="form-control" name="password" placeholder="e.g: Abcd123!@#">
+            </div>
+            <button type="submit" class="btn btn-success">Register</button>
+            <!-- </form> -->
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <script src="lib/js/login.js"></script>
+</body>
+
+</html>

@@ -4,6 +4,7 @@ const User = require('../models/user.models')
 module.exports = {
   showTodos(req, res, next) {
     Todo.find()
+      .populate('userId')
       .exec()
       .then(todos => {
         res.status(200).json({
@@ -19,8 +20,17 @@ module.exports = {
       })
   },
   addTodos(req, res, next) {
-    Todo.create(req.body)
+    const {
+      taskName,
+      priority,
+      note,
+      reminder
+    } = req.body
+    console.log('req.body :', req.body);
+    const userId = req.headers.result.id
+    Todo.create({ taskName, priority, userId, reminder, note })
       .then(todo => {
+        console.log('todo :', todo);
         User.findByIdAndUpdate(todo.userId,
           {
             $push: {
@@ -81,6 +91,7 @@ module.exports = {
       })
   },
   updateTodos(req, res, next) {
+    console.log('req.body :', req.body);
     Todo.findByIdAndUpdate(req.params.id, req.body, { runValidators: true })
       .exec()
       .then(todo => {

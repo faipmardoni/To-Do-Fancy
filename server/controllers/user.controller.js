@@ -1,5 +1,7 @@
 const User = require('../models/user.models')
 const Todo = require('../models/todo.models')
+const FB = require('fb')
+const jwt = require('jsonwebtoken')
 
 module.exports = {
   showUsers(req, res, next) {
@@ -24,7 +26,8 @@ module.exports = {
       .then(user => {
         res.status(200).json({
           message: 'success added user',
-          user
+          user,
+          token: jwt.sign({ _id, name, email, role }, process.env.MY_SECRETÎ)
         })
       })
       .catch(error => {
@@ -36,6 +39,7 @@ module.exports = {
   },
   detailUser(req, res, next) {
     User.findById(req.params.id)
+      .populate('todos')
       .exec()
       .then(user => {
         res.status(200).json({
@@ -71,9 +75,9 @@ module.exports = {
       })
   },
   updateUser(req, res, next) {
-    new User(req.body)
-      .save()
-      .then(function (user) {
+    User.findByIdAndUpdate(req.params.id, req.body, { runValidators: true, context: 'query' })
+      .exec()
+      .then(user => {
         res.status(200).json({
           message: 'success update',
           user
@@ -85,5 +89,41 @@ module.exports = {
           reason: error
         })
       })
+  },
+  loginFB(req, res, next) {
+    const access_token = req.body.access_token
+    FB.api('me', { fields: ['id', 'name', 'email', 'picture.width(800).height(800)'], access_token }, function (response) {
+      console.log('response :', response);
+      const { name, id, email, picture } = response
+      User.findOne({ email })
+        .then(user => {
+          if (user) {
+            let payload = {
+              id: user.id,
+              name: user.name,
+              email: user.email,
+            }
+            const token = jwt.sign(payload, process.env.MY_SECRET)
+            res.status(200).json({
+              message: 'success',
+              user,
+              token,
+            })
+          } else {
+            User.create({
+              name,
+              email,
+              password: `Todo#${id}`,
+              photo: picture.data.url
+            })
+          }
+        })
+        .catch(error => {
+          res.status(400).json({
+            message: 'error',
+            error
+          })
+        })
+    });
   }
 }

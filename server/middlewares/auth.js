@@ -2,9 +2,10 @@ const jwt = require('jsonwebtoken')
 
 module.exports = {
   authentication: (req, res, next) => {
-    const { token } = req.headers
-    jwt.verify(token, process.env.keyapi, (error, result) => {
+    const { auth } = req.headers
+    jwt.verify(auth, process.env.MY_SECRET, (error, result) => {
       if (!error) {
+        req.headers.result = result
         next()
       } else {
         return res.status(403).json({
