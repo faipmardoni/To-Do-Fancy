@@ -1,11 +1,47 @@
-// const token = localStorage.getItem('Token')
+function logOut() {
+  localStorage.clear()
+  window.location.reload(true)
+}
+
+const userId = localStorage.getItem('userId')
+
 const app = new Vue({
-  el: '#app',
+  el: '#listTodo',
   data: {
-    taskName: '',
-    priority: '',
-    reminder: '',
-    note: '',
+    taskName: null,
+    priority: null,
+    reminder: null,
+    name: null,
+    note: null,
+    todos: [],
+    photo: null,
+    specialDays: null,
+  },
+  created() {
+    axios.get(`http://127.0.0.1:3000/users/${userId}`, {
+      headers: {
+        'auth': token,
+      }
+    })
+      .then((result) => {
+        const user = result.data.user
+        this.todos = user.todos
+        this.photo = user.photo
+        this.name = user.name
+      }).catch((err) => {
+        alert(err.response.data.message)
+        console.log('err :', err.response.data);
+      });
+    axios
+      .get(`https://holidayapi.com/v1/holidays?key=e91ff89a-2be0-4401-8383-d45ccc50905e&country=US&year=2017`)
+      .then(result => {
+        this.specialDays = result.data.holidays
+      })
+      .catch(err => {
+        alert(err.response.data.message)        
+        console.log('err :', err);
+      })
+
   },
   methods: {
     addTask() {
@@ -15,6 +51,7 @@ const app = new Vue({
         note: this.note,
         reminder: this.reminder,
       }
+      let self = this
       axios
         .post('http://127.0.0.1:3000/todos/', newTodo, {
           headers: {
@@ -22,72 +59,50 @@ const app = new Vue({
           }
         })
         .then(response => {
-          console.log('reponse :', response);
+          self.todos.push(newTodo)
           alert('Success added task')
-          window.location.reload(true)
         })
         .catch(error => {
-          console.log('error :', error);
+          alert(error.response.data.message)
+          console.log('err :', error.response.data);
         })
+    },
+    setDate(date) {
+      if (date) {
+        return date.split('T')[0]
+      }
+    },
+    deleteTodo(todo) {
+      let self = this
+      if (todo._id) {
+        axios.delete(`http://127.0.0.1:3000/todos/${todo._id}`)
+          .then(response => {
+            console.log('success delete task')
+            const idx = self.todos.indexOf(todo);
+            self.todos.splice(idx, 1)
+          })
+          .catch(error => {
+            alert('please reload this page to delete this item')
+            console.log('err :', err.response.data);
+          })
+      } else {
+        window.location.reload(true)
+      }
+    },
+    editTodo(taskId, taskName, status, reminder, todo) {
+      let self = this
+      if (taskId) {
+        axios.put(`http://127.0.0.1:3000/todos/${taskId}`, { taskName, status, reminder })
+          .then(response => {
+            const idx = self.todos.indexOf(todo);
+            self.todos[idx] = { taskName, status, reminder }
+          })
+          .catch(error => {
+            console.log('err :', error);
+          })
+      } else {
+        window.location.reload(true)
+      }
     }
   }
 })
-
-const userId = localStorage.getItem('userId')
-console.log('userId :', userId);
-axios.get(`http://127.0.0.1:3000/users/${userId}`, {
-  headers: {
-    'auth': token,
-  }
-})
-  .then(response => {
-    console.log('response :', response);
-    const { todos, photo, name } = response.data.user
-    const app2 = new Vue({
-      el: '#listTodo',
-      data: {
-        name,
-        todos,
-      },
-      methods: {
-        setDate(date) {
-          console.log('date :', date);
-          return date.split('T')[0]
-        },
-        deleteTodo(taskId) {
-          axios.delete(`http://127.0.0.1:3000/todos/${taskId}`)
-            .then(response => {
-              window.location.reload(true)
-            })
-            .catch(error => {
-              console.log('error :', error);
-            })
-        },
-        editTodo(taskId, taskName, status, reminder) {
-          axios.put(`http://127.0.0.1:3000/todos/${taskId}`, { taskName, status, reminder })
-            .then(response => {
-              window.location.reload(true)
-            })
-            .catch(error => {
-              console.log('error :', error);
-            })
-        }
-      },
-    })
-    const app3 = new Vue({
-      el: '#app3',
-      data: {
-        photo,
-        name
-      },
-
-    })
-  })
-  .catch(error => {
-    console.log('error :', error);
-  })
-
-function logOut() {
-  localStorage.clear()
-  window.location.reload(true)
-}

@@ -2,6 +2,8 @@ const User = require('../models/user.models')
 const Todo = require('../models/todo.models')
 const FB = require('fb')
 const jwt = require('jsonwebtoken')
+const bcrypt = require('bcryptjs')
+const env = require('dotenv')
 
 module.exports = {
   showUsers(req, res, next) {
@@ -24,15 +26,25 @@ module.exports = {
   addUsers(req, res, next) {
     User.create(req.body)
       .then(user => {
+
+        let payload = {
+          userId: user._id,
+          name: user.name,
+          email: user.email,
+          role: user.role
+        }
+
+        const token = jwt.sign(payload, process.env.MY_SECRET)
+
         res.status(200).json({
           message: 'success added user',
           user,
-          token: jwt.sign({ _id, name, email, role }, process.env.MY_SECRETÎ)
+          token
         })
       })
       .catch(error => {
-        res.status(400).json({
-          message: 'failed to add users',
+        res.status(401).json({
+          message: 'failed',
           reason: error
         })
       })
@@ -93,7 +105,6 @@ module.exports = {
   loginFB(req, res, next) {
     const access_token = req.body.access_token
     FB.api('me', { fields: ['id', 'name', 'email', 'picture.width(800).height(800)'], access_token }, function (response) {
-      console.log('response :', response);
       const { name, id, email, picture } = response
       User.findOne({ email })
         .then(user => {
@@ -125,5 +136,36 @@ module.exports = {
           })
         })
     });
+  },
+  loginManual(req, res, next) {
+    const { email, password } = req.body
+    User.findOne({ email })
+      .then(user => {
+        bcrypt.compare(password, user.password).then((response) => {
+          if (!response) {
+            res.status(401).json({
+              message: 'email & password doesn\'t match'
+            })
+          } else {
+            let payload = {
+              id: user.id,
+              name: user.name,
+              email: user.email,
+            }
+            const token = jwt.sign(payload, process.env.MY_SECRET)
+            res.status(200).json({
+              message: 'success',
+              user,
+              token,
+            })
+          }
+        });
+      })
+      .catch(error => {
+        res.status(404).json({
+          message: 'email not found please register',
+          error
+        })
+      })
   }
 }

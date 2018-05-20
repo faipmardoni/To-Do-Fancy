@@ -13,5 +13,16 @@ module.exports = {
         })
       }
     })
+  },
+  authorization(req, res, next) {
+    const { auth } = req.headers
+    const decoded = jwt.decode(auth)
+    if (decoded.role == 'admin') {
+      return next()
+    } else {
+      return res.status(403).json({
+        message: 'You dont have access'
+      })
+    }
   }
 }

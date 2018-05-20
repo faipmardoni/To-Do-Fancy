@@ -1,5 +1,27 @@
 const Todo = require('../models/todo.models')
 const User = require('../models/user.models')
+const axios = require('axios')
+
+var HolidayAPI = require('node-holidayapi');
+var hapi = new HolidayAPI('8b2755d4-e7b3-4526-834d-defbfb88c8dc').v1;
+
+var parameters = {
+  // Required
+  country: 'US',
+  year:    2018,
+  // Optional
+  // month:    7,
+  // day:      4,
+  // previous: true,
+  // upcoming: true,
+  // public:   true,
+  // pretty:   true,
+};
+
+hapi.holidays(parameters, function (err, data) {
+  // Insert awesome code here...
+  console.log('data :', data);
+});
 
 module.exports = {
   showTodos(req, res, next) {
@@ -26,11 +48,15 @@ module.exports = {
       note,
       reminder
     } = req.body
-    console.log('req.body :', req.body);
+    axios.get('http://archive.org/advancedsearch.php?q=publicdate%3A%5B2018-05-13%5D+mediatype%3Amovies&fl%5B%5D=title&sort%5B%5D=&sort%5B%5D=&sort%5B%5D=&rows=1&page=1&output=json&callback=callback')
+    .then((result) => {
+      console.log('result :', result.data);
+    }).catch((err) => {
+      console.log('err :', err);
+    });
     const userId = req.headers.result.id
     Todo.create({ taskName, priority, userId, reminder, note })
       .then(todo => {
-        console.log('todo :', todo);
         User.findByIdAndUpdate(todo.userId,
           {
             $push: {
@@ -91,7 +117,6 @@ module.exports = {
       })
   },
   updateTodos(req, res, next) {
-    console.log('req.body :', req.body);
     Todo.findByIdAndUpdate(req.params.id, req.body, { runValidators: true })
       .exec()
       .then(todo => {

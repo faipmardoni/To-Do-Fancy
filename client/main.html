@@ -33,7 +33,7 @@
 <body>
 
   <nav class="navbar navbar-inverse">
-    <div class="container-fluid">
+    <div class="container">
       <div class="navbar-header">
         <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
           <span class="icon-bar"></span>
@@ -43,14 +43,6 @@
         <a class="navbar-brand" href="#">iList</a>
       </div>
       <div class="collapse navbar-collapse" id="myNavbar">
-        <ul class="nav navbar-nav">
-          <li class="active">
-            <a href="#">Home</a>
-          </li>
-          <li>
-            <a href="#">Messages</a>
-          </li>
-        </ul>
         <ul class="nav navbar-nav navbar-right">
           <li>
             <a href="javascript:logOut()" data-ng-click="">
@@ -61,9 +53,9 @@
     </div>
   </nav>
 
-  <div class="container text-center">
+  <div class="container text-center" id="listTodo">
     <div class="row">
-      <div class="col-sm-3 well" id="app3">
+      <div class="col-sm-3 well">
         <div class="well">
           <p>
             <a href="#">My Profile</a>
@@ -73,32 +65,23 @@
             <strong>{{name}}</strong>
           </p>
         </div>
-        <div class="well">
-        </div>
-        <div class="alert alert-success fade in">
-          <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
-          <p>
-            <strong>Ey!</strong>
-          </p>
-          People are looking at your profile. Find out who.
-        </div>
         <p>
-          <a href="#">Link</a>
+          -
         </p>
         <p>
-          <a href="#">Link</a>
+          -
         </p>
         <p>
-          <a href="#">Link</a>
+          -
         </p>
       </div>
-      <div class="col-sm-9" id="listTodo">
+      <div class="col-sm-9">
 
         <div class="row">
           <div class="col-sm-12">
             <div class="panel panel-default text-left">
               <div class="panel-body">
-                <p contenteditable="true">Status: Feeling Blue</p>
+                <img src="lib/img/header-background.jpg" alt="" srcset="" style="width: 100%">
               </div>
             </div>
           </div>
@@ -111,13 +94,14 @@
                 <tr>
                   <th>Task Name</th>
                   <th>Due Date</th>
-                  <th>Status</th>
+                  <th>Unique</th>
+                  <th>Completed</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
 
-                <tr is="item" v-for="todo in todos" :todo="todo" :format="setDate(todo.reminder)" @deleted="deleteTodo" @edited="editTodo"></tr>
+                <tr is="item" v-for="todo in todos" :todo="todo" :format="setDate(todo.reminder)" @deleted="deleteTodo" @edited="editTodo" :days="specialDays"></tr>
               </tbody>
 
             </table>
@@ -136,7 +120,7 @@
               <button type="button" class="close" data-dismiss="modal">&times;</button>
               <h4 class="modal-title">Add Task List</h4>
             </div>
-            <div class="modal-body" id="app">
+            <div class="modal-body">
               <!-- <form action="#"> -->
               <div class="form-group">
                 <label for="name">Task Name</label>
@@ -159,7 +143,7 @@
                 <label for="note">Note</label>
                 <textarea class="form-control" rows="5" id="note" v-model="note"></textarea>
               </div>
-              <button type="submit" class="btn btn-success" @click="addTask">ADD</button>
+              <button type="submit" class="btn btn-success" id="addTask" @click="addTask">ADD</button>
               <!-- {{note}} - {{{reminder}}} -->
             </div>
           </div>
@@ -175,7 +159,7 @@
               <button type="button" class="close" data-dismiss="modal">&times;</button>
               <h4 class="modal-title">Add Task List</h4>
             </div>
-            <div class="modal-body" id="app">
+            <div class="modal-body">
               <!-- <form action="#"> -->
               <div class="form-group">
                 <label for="name">Task Name</label>
@@ -207,9 +191,6 @@
       </div>
     </div>
   </div>
-  <footer class="container-fluid text-center">
-    <p>Footer Text</p>
-  </footer>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="lib/js/components/todo.component.js"></script>
   <script src="lib/js/main.js"></script>

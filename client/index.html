@@ -5,86 +5,86 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Todo Fancy</title>
+  <title>Login</title>
+  <link rel="stylesheet" href="lib/css/login.css">
+  <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
+  />
+  <link href="https://fonts.googleapis.com/css?family=Raleway:100,100i,200,200i,300,300i,400,400i,500,500i,600,600i,700,700i,800,800i,900,900i"
+    rel="stylesheet">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
-  <link rel="stylesheet" href="lib/css/login.css">
-  <script>
-    const token = localStorage.getItem('Token')
-    if (token) {
-      window.location.href = 'main.html'
-    }
-  </script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.5.16/vue.js"></script>
 </head>
 
 <body>
-  <div class="container" id="login-form">
-    <h1>Login</h1>
-    <div class="row login-form">
-      <!-- <form action="#"> -->
-      <div class="form-group">
-        <label for="email">Email</label>
-        <input type="email" class="form-control" name="email">
-      </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input type="password" class="form-control" name="password">
-      </div>
-      <button type="submit" class="btn btn-success btn-block">Login</button>
-      <!-- </form> -->
-    </div>
-    <div class="row" id="reg">
-      <p>Not a member?
-        <a href="#registerModal" data-toggle="modal" data-target="#modalRegister">Sign up now</a>
-      </p>
-      <span>
-        <strong>OR</strong>
-      </span>
-    </div>
-    <div class="row login">
-      <div class="col sosmed">
-        <div class="fb-login-button" data-max-rows="1" data-size="medium" data-button-type="continue_with" data-width="50px" data-scope="public_profile, email"
-          onlogin="checkLoginState();">
-        </div>
-      </div>
-    </div>
-  </div>
   <div class="container">
-    <div class="modal fade" id="modalRegister" role="form">
-      <div class="modal-dialog">
 
-        <!-- Modal content-->
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Create new Account</h4>
+    <header>
+      <h1>Login and Registration Form</h1>
+
+    </header>
+    <section>
+      <div id="container_demo">
+        <a class="hiddenanchor" id="toregister"></a>
+        <a class="hiddenanchor" id="tologin"></a>
+        <div id="wrapper">
+          <div id="login" class="animate form">
+            <form autocomplete="on">
+              <h1>Log in</h1>
+              <div class="row text-center">
+                <div class="fb-login-button" data-max-rows="1" data-size="medium" data-button-type="continue_with" data-width="50px" data-scope="public_profile, email"
+                  onlogin="checkLoginState();">
+                </div>
+                <hr>
+                <strong>OR</strong>
+              </div>
+              <p>
+                <label for="email" class="uname"> Your email </label>
+                <input id="email" name="email" required="required" type="text" placeholder="mymail@mail.com" v-model="email" />
+              </p>
+              <p>
+                <label for="password" class="youpasswd"> Your password </label>
+                <input id="password" name="password" required="required" type="password" placeholder="eg. X8df!90EO" v-model="password" />
+              </p>
+              <p class="signin button">
+                <input type="submit" value="Sign in" @click.prevent="login" />
+              </p>
+              <p class="change_link">
+                Not a member yet ?
+                <a href="#toregister" class="to_register">Join us</a>
+              </p>
+            </form>
           </div>
-          <div class="modal-body">
-            <!-- <form action="#"> -->
-            <div class="form-group">
-              <label for="name">Name</label>
-              <input type="text" class="form-control" name="name" placeholder="e.g: Faip Mardoni">
-            </div>
-            <div class="form-group">
-              <label for="email">Email</label>
-              <input type="email" class="form-control" name="email" placeholder="e.g: faipmardoni@gmail.com">
-            </div>
-            <div class="form-group">
-              <label for="password">Password</label>
-              <input type="password" class="form-control" name="password" placeholder="e.g: Abcd123!@#">
-            </div>
-            <button type="submit" class="btn btn-success">Register</button>
-            <!-- </form> -->
+
+          <div id="register" class="animate form">
+            <form autocomplete="on">
+              <h1> Sign up </h1>
+              <p>
+                <label for="namesignup" class="uname">Your name</label>
+                <input id="namesignup" name="namesignup" required="required" type="text" placeholder="Faip Mardoni" v-model="name" />
+              </p>
+              <p>
+                <label for="emailsignup" class="youmail"> Your email</label>
+                <input id="emailsignup" name="emailsignup" required="required" type="email" placeholder="mysupermail@mail.com" v-model="email" />
+              </p>
+              <p>
+                <label for="passwordsignup" class="youpasswd">Your password </label>
+                <input id="passwordsignup" name="passwordsignup" required="required" type="password" placeholder="eg. X8df!90EO" v-model="password" />
+              </p>
+              <p class="signup button">
+                <input type="submit" value="Sign up" @click.prevent="register" />
+              </p>
+              <p class="change_link">
+                Already a member ?
+                <a href="#tologin" class="to_register"> Go and log in </a>
+              </p>
+            </form>
           </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          </div>
+
         </div>
-
       </div>
-    </div>
-
+    </section>
   </div>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="lib/js/login.js"></script>
