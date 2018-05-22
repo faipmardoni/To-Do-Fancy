@@ -37,17 +37,19 @@ Vue.component('item', {
         })
     },
     apiHoliday(date) {
-      let newDate = new Date(date)
-      let result = `${newDate.getFullYear() - 1}${date.substring(4)}`
-      console.log('result :', result);
-      if(result) {
-        if(this.days[result] == undefined) {
+      if(date) {
+        let newDate = new Date(date)
+        let result = `${newDate.getFullYear() - 1}${date.substring(4)}`
+        if (result) {
+          if (this.days[result] == undefined || this.days[result] == null) {
+            return this.spesialDay = 'NO'
+          } else {
+            return this.spesialDay = this.days[result][0].name
+          }
+        } else {
           return this.spesialDay = 'NO'
-        }else {
-          console.log('this.days[result] :', this.days[result]);
-          return this.spesialDay = this.days[result][0].name
         }
-      }else {
+      } else {
         return this.spesialDay = 'NO'
       }
     }

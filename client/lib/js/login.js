@@ -4,7 +4,7 @@ function statusChangeCallback(response) {
     // window.location='http://localhost:8080/#/'
     const access_token = response.authResponse.accessToken
     axios
-      .post("http://localhost:3000/users/login", { access_token })
+      .post("https://faipmardoni.net/users/login", { access_token })
       .then(res => {
         localStorage.setItem("Token", res.data.token)
         localStorage.setItem("userId", res.data.user._id)
@@ -53,7 +53,7 @@ const login = new Vue({
   },
   methods: {
     login() {
-      axios.post('http://localhost:3000/users/login-manual', {
+      axios.post('https://faipmardoni.net/users/login-manual', {
         email: this.email,
         password: this.password
       })
@@ -78,15 +78,14 @@ const register = new Vue({
   },
   methods: {
     register() {
-      axios.post('http://localhost:3000/users/', {
+      axios.post('https://faipmardoni.net/users/', {
         email: this.email,
         password: this.password,
         name: this.name
       })
         .then((result) => {
-          localStorage.setItem("Token", result.data.token)
-          localStorage.setItem("userId", result.data.user._id)
-          window.location.href = 'main.html'
+          console.log('result :', result);
+          alert('success register please back to login')
         }).catch((err) => {
           alert('failed to add user please try again')
           console.log('err :', err.response.data);

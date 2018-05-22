@@ -20,19 +20,18 @@ const app = new Vue({
   created() {
     const token = localStorage.getItem('Token')
     if(token) {
-      axios.get(`http://localhost:3000/users/${userId}`, {
+      axios.get(`https://faipmardoni.net/users/${userId}`, {
         headers: {
           'auth': token,
         }
       })
         .then((result) => {
-          console.log('result :', result);
           const user = result.data.user
           this.todos = user.todos
           this.photo = user.photo
           this.name = user.name
         }).catch((err) => {
-          // alert(err.response.data.message)
+          alert(err.response.data.message)
           console.log('err :', err);
         });
       axios
@@ -44,7 +43,7 @@ const app = new Vue({
           alert(err.response.data.message)
           console.log('err :', err);
         })
-    }else {
+    } else {
       window.location.href = 'index.html'
     }
 
@@ -60,7 +59,7 @@ const app = new Vue({
       }
       let self = this
       axios
-        .post('http://localhost:3000/todos/', newTodo, {
+        .post('https://faipmardoni.net/todos/', newTodo, {
           headers: {
             'auth': token,
           }
@@ -83,7 +82,7 @@ const app = new Vue({
       const token = localStorage.getItem('Token')      
       let self = this
       if (todo._id) {
-        axios.delete(`http://localhost:3000/todos/${todo._id}`, {
+        axios.delete(`https://faipmardoni.net/todos/${todo._id}`, {
           headers: {
             'auth': token,
           }
@@ -105,7 +104,7 @@ const app = new Vue({
       const token = localStorage.getItem('Token')      
       let self = this
       if (taskId) {
-        axios.put(`http://localhost:3000/todos/${taskId}`, { taskName, status, reminder }, {
+        axios.put(`https://faipmardoni.net/todos/${taskId}`, { taskName, status, reminder }, {
           headers: {
             'auth': token,
           }
