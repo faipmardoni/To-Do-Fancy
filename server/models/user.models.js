@@ -26,7 +26,7 @@ const userSchema = new schema({
   },
   photo: {
     type: 'String',
-    default: 'http://teejr.com/wp-content/uploads/2015/06/no-photo-availiable.jpg'
+    default: 'https://www.theouterbankshospital.com/OuterBanksHospital/Images/Vidant_Default_Profile.png'
   },
   todos: [{
     type: schema.Types.ObjectId, ref: 'Todo',
