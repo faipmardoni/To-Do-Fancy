@@ -4,7 +4,7 @@ function statusChangeCallback(response) {
     // window.location='http://localhost:8080/#/'
     const access_token = response.authResponse.accessToken
     axios
-      .post("http://127.0.0.1:3000/users/login", { access_token })
+      .post("http://localhost:3000/users/login", { access_token })
       .then(res => {
         localStorage.setItem("Token", res.data.token)
         localStorage.setItem("userId", res.data.user._id)

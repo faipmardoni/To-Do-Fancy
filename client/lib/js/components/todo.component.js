@@ -33,17 +33,22 @@ Vue.component('item', {
           this.spesialDay = result.data.holidays
         })
         .catch(err => {
-          swal("Your error", err.response.data.data.message, "error")
+          console.log('err :', err);
         })
     },
     apiHoliday(date) {
       let newDate = new Date(date)
       let result = `${newDate.getFullYear() - 1}${date.substring(4)}`
-      if(this.days[result] == undefined) {
-        return this.spesialDay = 'not special day'
+      console.log('result :', result);
+      if(result) {
+        if(this.days[result] == undefined) {
+          return this.spesialDay = 'NO'
+        }else {
+          console.log('this.days[result] :', this.days[result]);
+          return this.spesialDay = this.days[result][0].name
+        }
       }else {
-        console.log('this.days[result] :', this.days[result]);
-        return this.spesialDay = this.days[result][0].name
+        return this.spesialDay = 'NO'
       }
     }
   }

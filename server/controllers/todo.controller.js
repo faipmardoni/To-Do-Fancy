@@ -48,12 +48,6 @@ module.exports = {
       note,
       reminder
     } = req.body
-    axios.get('http://archive.org/advancedsearch.php?q=publicdate%3A%5B2018-05-13%5D+mediatype%3Amovies&fl%5B%5D=title&sort%5B%5D=&sort%5B%5D=&sort%5B%5D=&rows=1&page=1&output=json&callback=callback')
-    .then((result) => {
-      console.log('result :', result.data);
-    }).catch((err) => {
-      console.log('err :', err);
-    });
     const userId = req.headers.result.id
     Todo.create({ taskName, priority, userId, reminder, note })
       .then(todo => {

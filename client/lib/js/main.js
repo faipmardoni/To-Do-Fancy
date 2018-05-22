@@ -18,33 +18,40 @@ const app = new Vue({
     specialDays: null,
   },
   created() {
-    axios.get(`http://127.0.0.1:3000/users/${userId}`, {
-      headers: {
-        'auth': token,
-      }
-    })
-      .then((result) => {
-        const user = result.data.user
-        this.todos = user.todos
-        this.photo = user.photo
-        this.name = user.name
-      }).catch((err) => {
-        alert(err.response.data.message)
-        console.log('err :', err.response.data);
-      });
-    axios
-      .get(`https://holidayapi.com/v1/holidays?key=e91ff89a-2be0-4401-8383-d45ccc50905e&country=US&year=2017`)
-      .then(result => {
-        this.specialDays = result.data.holidays
+    const token = localStorage.getItem('Token')
+    if(token) {
+      axios.get(`http://localhost:3000/users/${userId}`, {
+        headers: {
+          'auth': token,
+        }
       })
-      .catch(err => {
-        alert(err.response.data.message)        
-        console.log('err :', err);
-      })
+        .then((result) => {
+          console.log('result :', result);
+          const user = result.data.user
+          this.todos = user.todos
+          this.photo = user.photo
+          this.name = user.name
+        }).catch((err) => {
+          // alert(err.response.data.message)
+          console.log('err :', err);
+        });
+      axios
+        .get(`https://holidayapi.com/v1/holidays?key=e91ff89a-2be0-4401-8383-d45ccc50905e&country=US&year=2017`)
+        .then(result => {
+          this.specialDays = result.data.holidays
+        })
+        .catch(err => {
+          alert(err.response.data.message)
+          console.log('err :', err);
+        })
+    }else {
+      window.location.href = 'index.html'
+    }
 
   },
   methods: {
     addTask() {
+      const token = localStorage.getItem('Token')
       let newTodo = {
         taskName: this.taskName,
         priority: this.priority,
@@ -53,7 +60,7 @@ const app = new Vue({
       }
       let self = this
       axios
-        .post('http://127.0.0.1:3000/todos/', newTodo, {
+        .post('http://localhost:3000/todos/', newTodo, {
           headers: {
             'auth': token,
           }
@@ -73,9 +80,14 @@ const app = new Vue({
       }
     },
     deleteTodo(todo) {
+      const token = localStorage.getItem('Token')      
       let self = this
       if (todo._id) {
-        axios.delete(`http://127.0.0.1:3000/todos/${todo._id}`)
+        axios.delete(`http://localhost:3000/todos/${todo._id}`, {
+          headers: {
+            'auth': token,
+          }
+        })
           .then(response => {
             console.log('success delete task')
             const idx = self.todos.indexOf(todo);
@@ -90,10 +102,16 @@ const app = new Vue({
       }
     },
     editTodo(taskId, taskName, status, reminder, todo) {
+      const token = localStorage.getItem('Token')      
       let self = this
       if (taskId) {
-        axios.put(`http://127.0.0.1:3000/todos/${taskId}`, { taskName, status, reminder })
+        axios.put(`http://localhost:3000/todos/${taskId}`, { taskName, status, reminder }, {
+          headers: {
+            'auth': token,
+          }
+        })
           .then(response => {
+            alert('success')            
             const idx = self.todos.indexOf(todo);
             self.todos[idx] = { taskName, status, reminder }
           })

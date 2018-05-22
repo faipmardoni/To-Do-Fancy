@@ -15,7 +15,7 @@ const {
 router.get('/', showTodos)
 router.post('/', authentication, addTodos)
 router.get('/:id', authentication, detailTodos)
-router.delete('/:id', deleteTodos)
-router.put('/:id', updateTodos)
+router.delete('/:id', authentication, deleteTodos)
+router.put('/:id', authentication, updateTodos)
 
 module.exports = router;
